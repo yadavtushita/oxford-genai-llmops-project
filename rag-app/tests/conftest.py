@@ -45,3 +45,10 @@ def mock_generate_response():
     """Fixture that mocks the LLM generation process in the generate_response function."""
     with patch("server.src.services.generation_service.generate_response") as mock_gen:
         yield mock_gen
+
+@pytest.fixture
+def mock_retrieve_top_k_chunks():
+    """Fixture that mocks the Vector Database retrieval process
+    in the retrieve_top_k_chunks function."""
+    with patch("server.src.services.retrieval_service.retrieve_top_k_chunks") as mock_gen:
+        yield mock_gen
