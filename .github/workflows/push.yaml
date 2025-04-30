@@ -1,0 +1,48 @@
+name: CI Initialise
+
+on:
+    push:
+      branches:
+        - '**' 
+
+jobs:
+    initialise:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Print CI message
+              run: echo "CI step initialising" 
+            
+            - name: Setup python
+              uses: actions/setup-python@v5
+              with:
+                python-version: '3.12'
+
+            - name: Install poetry
+              run: |
+                curl -sSL https://install.python-poetry.org | python3 -
+                echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+            - name: Cache poetry dependencies
+              uses: actions/cache@v4
+              with:
+                path: |
+                    ~/.cache/pypoetry
+                    ~/.cache/pip
+                key: poetry-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+                restore-keys: |
+                    poetry-${{ runner.os }}-
+    
+            - name: Install dependencies
+              run: |
+                cd rag-app
+                poetry install --no-root
+
+            - name: Run pytest
+              run: |
+                cd rag-app
+                echo "${{ secrets.DUMMY_ENV }}" > .env
+                poetry run pytest

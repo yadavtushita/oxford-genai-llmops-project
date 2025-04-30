@@ -13,9 +13,9 @@ def mock_query():
 def mock_chunks():
     """Fixture to provide mock retrieved document chunks for generation tests."""
     return [
-        {"text": "Perovskite materials are used in solar cells."},
-        {"text": "Perovskites have unique electronic properties."},
-        {"text": "The efficiency of perovskite solar cells has improved."},
+        {"chunk": "Perovskite materials are used in solar cells."},
+        {"chunk": "Perovskites have unique electronic properties."},
+        {"chunk": "The efficiency of perovskite solar cells has improved."},
     ]
 
 
@@ -26,6 +26,18 @@ def mock_config():
         "max_tokens": 150,
         "temperature": 0.7,
     }
+
+@pytest.fixture
+def mock_db_config():
+    """Fixture for mock database configuration."""
+    return {
+        "dbname": "test_db",
+        "user": "test_user",
+        "password": "test_password",
+        "host": "localhost",
+        "port": "5432",
+    }
+
 
 
 @pytest.fixture
